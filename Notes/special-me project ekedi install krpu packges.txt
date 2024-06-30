@@ -1,2 +1,7 @@
 1.MinimalApis.Extension kiyla pckage ekk install kala 
 meka install krnna nuget kiyla web iste ekkt giya , nuget kiynne .net walt thiyna package manager ekk ekiynne .net walata one krna packages million gaanak eke thiynwa , eken .net cli eke ghnna puluwan code ek copy krla terminal eke paste krla enter krla thami install krgatte
+
+
+2.Microsoft.EntityFrameworkCore.Sqlite : meka me orm walt adlwa database ekk yna package ekk, mekath nuget ekan install krgtte
+
+3.dotnet-ef: mekath nugt ekn aran install kale , habai meka globally install kale , meka one wenwa data base walt orm walin ape .net project eke thiyna dewlap map krddi 
