@@ -1,0 +1,70 @@
+Data annotations in ASP.NET, .NET, or C# are attributes that you can use to apply validation rules, specify formatting, or configure data model behaviors directly within your code. They are particularly useful for model validation in web applications, providing a way to enforce business rules and constraints without having to write extensive code.
+
+Common Data Annotations
+Here are some commonly used data annotations:
+
+1.Validation Attributes:
+---------------------------
+
+[Required]: Ensures a field is not left empty.
+
+[StringLength]: Specifies the maximum length of a string property.
+
+[Range]: Specifies the minimum and maximum values for a numeric property.
+
+[RegularExpression]: Validates that a property matches a specified regular expression.
+
+[EmailAddress]: Validates that a property is in the form of an email address.
+
+[Phone]: Validates that a property is in the form of a phone number.
+
+[Url]: Validates that a property is in the form of a URL.
+
+
+2.Formatting Attributes:
+--------------------------
+
+[Display]: Specifies how a field is displayed in the UI.
+
+[DisplayFormat]: Specifies the format for displaying data.
+
+[DataType]: Specifies the type of data (e.g., Date, Time, Currency).
+
+
+3.Relational Attributes:
+-------------------------
+
+[ForeignKey]: Indicates that a property is a foreign key.
+
+[InverseProperty]: Specifies the inverse of a relationship.
+
+example:
+
+using System;
+using System.ComponentModel.DataAnnotations;
+
+public class User
+{
+    [Key]
+    public int Id { get; set; }
+
+    [Required(ErrorMessage = "Name is required.")]
+    [StringLength(100, ErrorMessage = "Name can't be longer than 100 characters.")]
+    public string Name { get; set; }
+
+    [Required(ErrorMessage = "Email is required.")]
+    [EmailAddress(ErrorMessage = "Invalid Email Address")]
+    public string Email { get; set; }
+
+    [Range(18, 100, ErrorMessage = "Age must be between 18 and 100.")]
+    public int Age { get; set; }
+
+    [DataType(DataType.Date)]
+    [Display(Name = "Date of Birth")]
+    public DateTime DateOfBirth { get; set; }
+
+    [Phone(ErrorMessage = "Invalid Phone Number")]
+    public string PhoneNumber { get; set; }
+}
+
+//meketh ara java wala annotation dnwa wagema thami ithin

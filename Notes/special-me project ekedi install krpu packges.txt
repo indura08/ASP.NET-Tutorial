@@ -1,0 +1,2 @@
+1.MinimalApis.Extension kiyla pckage ekk install kala 
+meka install krnna nuget kiyla web iste ekkt giya , nuget kiynne .net walt thiyna package manager ekk ekiynne .net walata one krna packages million gaanak eke thiynwa , eken .net cli eke ghnna puluwan code ek copy krla terminal eke paste krla enter krla thami install krgatte

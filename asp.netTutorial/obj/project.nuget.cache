@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "6QrRn+Ng4xM=",
+  "success": true,
+  "projectFilePath": "E:\\.net tutorial\\asp.netTutorial\\asp.netTutorial.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\indur\\.nuget\\packages\\microsoft.openapi\\1.4.3\\microsoft.openapi.1.4.3.nupkg.sha512",
+    "C:\\Users\\indur\\.nuget\\packages\\minimalapis.extensions\\0.11.0\\minimalapis.extensions.0.11.0.nupkg.sha512",
+    "C:\\Users\\indur\\.nuget\\packages\\minivalidation\\0.8.0\\minivalidation.0.8.0.nupkg.sha512"
+  ],
+  "logs": []
+}

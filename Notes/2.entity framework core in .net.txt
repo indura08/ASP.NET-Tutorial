@@ -1,0 +1,127 @@
+what is entity framework core
+==============================
+
+Entity Framework Core (EF Core) is an open-source, lightweight, extensible, and cross-platform version of the popular Entity Framework data access technology. It serves as an object-relational mapper (ORM) for .NET applications, enabling developers to work with databases using .NET objects and reducing the need to write extensive data access code.
+
+Key Features of Entity Framework Core
+
+1.Cross-Platform:
+-------------------
+
+EF Core is designed to work across different platforms including Windows, Linux, and macOS.
+
+2.Lightweight and Extensible:
+-------------------------------
+
+EF Core is more modular and lightweight compared to its predecessor, Entity Framework 6 (EF6).
+It is highly extensible, allowing developers to customize its behavior and functionality.
+
+3.modeling:
+-----------
+EF Core allows you to define a data model using .NET classes, which can be mapped to a database schema.
+You can use attributes or the Fluent API to configure the model.
+
+4.Querying:
+--------------
+
+EF Core supports LINQ (Language Integrated Query) to query the database using strongly-typed .NET code.
+It translates LINQ queries to SQL queries, which are executed against the database.
+
+
+5.Change Tracking:
+-------------------
+EF Core keeps track of changes made to the objects and generates the necessary SQL commands to persist those changes to the database.
+
+
+6.Migrations:
+----------------
+EF Core provides a way to evolve your database schema over time, keeping it in sync with your data model using migrations.
+
+
+7.Performance:
+---------------
+EF Core includes several performance improvements over EF6, such as better handling of large models and improved query generation.
+
+
+how to use it 
+===============
+
+step 1: Install EF Core
+You need to install the necessary EF Core packages using NuGet. You can do this via the NuGet Package Manager or the Package Manager Console:
+
+"dotnet add package Microsoft.EntityFrameworkCore
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+dotnet add package Microsoft.EntityFrameworkCore.Tools
+"
+
+Step 2: Define the Data Model
+Create a class that represents your data model:
+
+public class Game
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Genre { get; set; }
+    public decimal Price { get; set; }
+    public DateTime ReleaseDate { get; set; }
+}
+
+
+Step 3: Create the Database Context
+Create a class that derives from DbContext and represents a session with the database:
+
+public class GameContext : DbContext
+{
+    public GameContext(DbContextOptions<GameContext> options)
+        : base(options)
+    {
+    }
+
+    public DbSet<Game> Games { get; set; }
+}
+
+Step 4: Configure the Database Context
+In your Startup.cs or Program.cs file, configure the database context to use a SQL Server database:
+
+public class Startup
+{
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddDbContext<GameContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+        services.AddControllersWithViews();
+    }
+
+    // other methods...
+}
+
+Step 5: Use the Database Context
+You can now use the GameContext to interact with the database in your controllers or services:
+
+public class GamesController : Controller
+{
+    private readonly GameContext _context;
+
+    public GamesController(GameContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<IActionResult> Index()
+    {
+        return View(await _context.Games.ToListAsync());
+    }
+
+    // other actions...
+}
+
+
+Step 6: Create and Apply Migrations
+Use the EF Core tools to create and apply migrations:
+
+dotnet ef migrations add InitialCreate
+dotnet ef database update
+
+
+
