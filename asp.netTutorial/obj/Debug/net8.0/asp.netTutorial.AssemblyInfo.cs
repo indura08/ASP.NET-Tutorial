@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("asp.netTutorial")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fc51c771677d07ed3b3eff7c5592f7bf1eb4e70d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+54b9d08e6d505cf17787f1da1904a05c27bb7a2b")]
 [assembly: System.Reflection.AssemblyProductAttribute("asp.netTutorial")]
 [assembly: System.Reflection.AssemblyTitleAttribute("asp.netTutorial")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

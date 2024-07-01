@@ -5,3 +5,7 @@ meka install krnna nuget kiyla web iste ekkt giya , nuget kiynne .net walt thiyn
 2.Microsoft.EntityFrameworkCore.Sqlite : meka me orm walt adlwa database ekk yna package ekk, mekath nuget ekan install krgtte
 
 3.dotnet-ef: mekath nugt ekn aran install kale , habai meka globally install kale , meka one wenwa data base walt orm walin ape .net project eke thiyna dewlap map krddi 
+
+4.dotnet add package Microsoft.EntityFrameworkCore.Design --version 9.0.0-preview.5.24306.3 - meka me data base migration wlat install krpu package ekk
+
+hodt mthk thiygnna one deyk thami meke me packags install krddai tikk latestma ewa ganna blnna nattnm loku loku errors enwa 

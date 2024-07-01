@@ -1,0 +1,80 @@
+What are Migrations in .NET?
+==============================
+
+Migrations in .NET (specifically using Entity Framework Core) are a way to keep your database schema in sync with your application's data model. When you make changes to your data model (e.g., adding a new property to a class), you can create a migration to apply those changes to your database.
+
+How to Use Migrations in .NET
+-----------------------------
+
+Step-by-Step Guide
+
+1.Install Necessary Packages:
+-----------------------------------
+Make sure you have the Entity Framework Core and the specific provider for your database installed. For example, if you are using SQLite, you would install:
+
+dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+dotnet add package Microsoft.EntityFrameworkCore.Design
+
+
+2.Set Up Your DbContext:
+---------------------------
+Create a class that inherits from DbContext and define your DbSet properties.
+
+using Microsoft.EntityFrameworkCore;
+
+public class MyDbContext : DbContext
+{
+    public DbSet<Game> Games { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder options)
+        => options.UseSqlite("Data Source=mydatabase.db");
+}
+
+public class Game
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Genre { get; set; }
+    public decimal Price { get; set; }
+    public DateOnly ReleaseDate { get; set; }
+}
+
+
+3.Add Your First Migration:
+------------------------------
+In your project directory, open a terminal and run:
+
+dotnet ef migrations add InitialCreate : m tutorial eke migrate kaleth plaweni ek mehmai
+
+4 miss kale eka hithnna epa
+
+
+5.Add a New Migration for Changes:
+----------------------------------
+
+After making changes, create a new migration to capture those changes:
+
+dotnet ef migrations add AddDeveloperToGame
+
+6.Update the Database:
+----------------------
+
+Apply the new migration to update your database schema:
+
+
+dotnet ef migrations add AddDeveloperToGame
+
+------------------------------------------------------------------------------------------------------------------------------
+
+mama migration krddiplaweniyt ghpu migration command eka 
+
+	" dotnet ef migrations add InitialCreate --output-dir Data\Migrations "
+
+e kiynne meke theruma awilla
+
+
+eta passe meka krla iwar wela api migrations update krnna one  eka krna command ek :
+
+	" dotnet ef database update "
+	
+
