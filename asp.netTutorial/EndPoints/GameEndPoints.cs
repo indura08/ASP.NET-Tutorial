@@ -1,4 +1,7 @@
-﻿using asp.netTutorial.Dtos;
+﻿using asp.netTutorial.Data;
+using asp.netTutorial.Dtos;
+using asp.netTutorial.Entities;
+using asp.netTutorial.Mapping;
 
 namespace asp.netTutorial.EndPoints
 {
@@ -25,17 +28,43 @@ namespace asp.netTutorial.EndPoints
             group.MapGet("/{id}", (int id) => games.Find(game => game.Id == id)).WithName(gameEndPoint);
 
             //create new game POST method
-            group.MapPost("/create", (CreateGameDto newGame) => {
-                GameDto game = new GameDto(
+            group.MapPost("/create", (CreateGameDto newGame, GameStoreContext dbContext) => {
+                /*GameDto game = new GameDto(
                         games.Count + 1,
                         newGame.Name,
                         newGame.Genre,
                         newGame.Price,
-                        newGame.ReleaseDate);
+                        newGame.ReleaseDate);*/ //me kalin thibba widiyt e kiynne db eka sambnda nathuwa aluth game ekk hdaddi giya widiya
+                Game game = new()   //methna game kiynne db ekat dapu gma ewaguwa hode ptlaganna epa aaye blddi
+                {
+                    Name = newGame.Name,
+                    Genre = dbContext.Genres.Find(newGame.Genre), //,menna me wage thami database eke thiyna genre waguwen id ekt adla genre eka search krla eka assign krnne aluthing save krnna yna game ekt
+                    GenreId = newGame.Genre,
+                    //mama price daala thibbe nha Game class eke ehinda eka nah meke
+                    ReleaseDate = newGame.ReleaseDate
 
-                games.Add(game);
+                };
 
-                return Results.CreatedAtRoute(gameEndPoint, new { id = game.Id }, game);
+                //ToEntity method ekn ganna gameDto ekk game ekkatada game ekk gameDto ekktd convert krla apita data base ekt daanna th puluwan menna mehm
+
+                Game gameToEntity = newGame.ToEntity();
+                game.Genre = dbContext.Genres.Find(newGame.Genre);
+
+
+                dbContext.Games.Add(gameToEntity);//menna mekn thami kiynne dbcontext eka hraha Games table ekt mem aluth game ek save krnna kiyla 
+                dbContext.SaveChanges();  //menna me wage anthmat changes save krnna kiylth kiynna one 
+
+                GameDto gameDto = new GameDto(
+                    
+                        Id: game.Id,
+                        Name: game.Name,
+                        genre: game.Genre!.Name,
+                        Price: game.Name.Length,
+                        RealseDate: game.ReleaseDate
+                       
+
+                    );
+                return Results.CreatedAtRoute(gameEndPoint, new { id = game.Id }, gameToEntity.ToDto());
             }).WithParameterValidation();       //me anthimt daala thiyna with parametervalidation scn eka awilla ara api install krgttu minimalapi.extension eke function ekk. meken wenne api dapu dataannotations tika (validation walt) ta dalwa createdto walin ganna dta valid da kiyl check krna ek
             //me withparametervalidation scn ek damma input validation error qualitytama denwa 
 
