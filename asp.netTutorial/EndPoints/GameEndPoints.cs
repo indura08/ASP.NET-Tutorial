@@ -9,11 +9,11 @@ namespace asp.netTutorial.EndPoints
     {
         private static string gameEndPoint = "getGames";
 
-        private static readonly List<GameDto> games = new List<GameDto> {
+        private static readonly List<GamesummeryDto> games = new List<GamesummeryDto> {
 
-            new GameDto(1,"street fighter 2" , "fighting", 19.99M, new DateOnly(1992,7,15)),
-            new GameDto(2,"Final fantacy xvi" , "Role playing", 59.99M, new DateOnly(2010,10,20)),      //methna M daala thiynne decimal hinda
-            new GameDto(3,"Fifa 23" , "sports", 129.99M, new DateOnly(2023,3,8)),
+            new GamesummeryDto(1,"street fighter 2" , "fighting", 19.99M, new DateOnly(1992,7,15)),
+            new GamesummeryDto(2,"Final fantacy xvi" , "Role playing", 59.99M, new DateOnly(2010,10,20)),      //methna M daala thiynne decimal hinda
+            new GamesummeryDto(3,"Fifa 23" , "sports", 129.99M, new DateOnly(2023,3,8)),
 
         };
 
@@ -25,7 +25,13 @@ namespace asp.netTutorial.EndPoints
             group.MapGet("/", () => games);
 
             //get games by id 
-            group.MapGet("/{id}", (int id) => games.Find(game => game.Id == id)).WithName(gameEndPoint);
+            group.MapGet("/{id}", (int id , GameStoreContext dbContext) => {
+
+                Game? game = dbContext.Games.Find(id);
+
+                return game is null ? Results.NotFound() : Results.Ok(game);
+
+            }).WithName(gameEndPoint);
 
             //create new game POST method
             group.MapPost("/create", (CreateGameDto newGame, GameStoreContext dbContext) => {
@@ -48,13 +54,13 @@ namespace asp.netTutorial.EndPoints
                 //ToEntity method ekn ganna gameDto ekk game ekkatada game ekk gameDto ekktd convert krla apita data base ekt daanna th puluwan menna mehm
 
                 Game gameToEntity = newGame.ToEntity();
-                game.Genre = dbContext.Genres.Find(newGame.Genre);
+                //meka one wenne nha - game.Genre = dbContext.Genres.Find(newGame.Genre);
 
 
                 dbContext.Games.Add(gameToEntity);//menna mekn thami kiynne dbcontext eka hraha Games table ekt mem aluth game ek save krnna kiyla 
                 dbContext.SaveChanges();  //menna me wage anthmat changes save krnna kiylth kiynna one 
 
-                GameDto gameDto = new GameDto(
+                GamesummeryDto gameDto = new GamesummeryDto(
                     
                         Id: game.Id,
                         Name: game.Name,
@@ -64,16 +70,20 @@ namespace asp.netTutorial.EndPoints
                        
 
                     );
-                return Results.CreatedAtRoute(gameEndPoint, new { id = game.Id }, gameToEntity.ToDto());
+                return Results.CreatedAtRoute(gameEndPoint, new { id = game.Id }, gameToEntity.ToGameDetailsDto());
             }).WithParameterValidation();       //me anthimt daala thiyna with parametervalidation scn eka awilla ara api install krgttu minimalapi.extension eke function ekk. meken wenne api dapu dataannotations tika (validation walt) ta dalwa createdto walin ganna dta valid da kiyl check krna ek
             //me withparametervalidation scn ek damma input validation error qualitytama denwa 
 
             //update method
-            group.MapPut("/update/{id}", (int id, UpdateDto updateGame) => {
+            group.MapPut("/update/{id}", (int id, UpdateDto updateGame, GameStoreContext dbContext) => {
 
-                var index = games.FindIndex(game => game.Id == id);
+                var existingGame = dbContext.Games.Find(id);
 
-                games[index] = new GameDto(id, updateGame.name, updateGame.genre, updateGame.price, updateGame.releaseDate);
+                if (existingGame != null) {
+                    return Results.NotFound();
+                }
+
+                dbContext.Entry(existingGame).CurrentValues.SetValues(updateGame.ToEntity(id));
 
                 return Results.NoContent();
             });

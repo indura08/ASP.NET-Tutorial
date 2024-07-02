@@ -1,6 +1,6 @@
 ﻿namespace asp.netTutorial.Dtos
 {
-    public record class GameDto(
+    public record class GamesummeryDto(
         int Id,
         string Name,
         string genre,

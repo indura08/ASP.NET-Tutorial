@@ -18,12 +18,38 @@ namespace asp.netTutorial.Mapping
 
         }
 
-        public static GameDto ToDto(this Game game)
+        public static Game ToEntity(this UpdateDto game , int id)
+        {
+            return new Game()
+            {
+                Id = id,
+                Name = game.name,
+                GenreId = game.GenreId,
+                ReleaseDate = game.releaseDate
+            };
+
+        }
+
+
+        public static GamesummeryDto ToGameSummeryDto(this Game game)
         {
             return new(
                     Id: game.Id,
                     Name: game.Name,
                     genre: game.Genre!.Name,
+                    Price: game.Name.Length,
+                    RealseDate: game.ReleaseDate
+
+                );
+
+        }
+
+        public static GameDetailsDto ToGameDetailsDto(this Game game)
+        {
+            return new(
+                    Id: game.Id,
+                    Name: game.Name,
+                    genre: game.GenreId,
                     Price: game.Name.Length,
                     RealseDate: game.ReleaseDate
 

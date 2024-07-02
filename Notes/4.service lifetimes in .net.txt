@@ -1,0 +1,29 @@
+In .NET, services have different lifetimes that determine how they are instantiated and how long they live. Here are the main types of service lifetimes, explained simply:
+
+1.Transient:
+
+What it means: A new instance of the service is created every time it is requested.
+Use case: When you need a lightweight service with little or no state. For example, a service that formats a date.
+
+example:services.AddTransient<IMyService, MyService>();
+
+
+2.Scoped:
+
+What it means: A new instance of the service is created per scope. In a web application, a scope is usually a single HTTP request.
+Use case: When you need to maintain state across a single request but not between requests. For example, a service that handles user data for the duration of a single request.
+
+example: services.AddScoped<IMyService, MyService>();
+
+
+3.Singleton:
+
+What it means: A single instance of the service is created and shared throughout the application’s lifetime.
+Use case: When you need to maintain state across the entire application and ensure only one instance exists. For example, a service that caches data.
+
+example:services.AddSingleton<IMyService, MyService>();
+
+
+Transient: New instance per request. Good for lightweight and stateless services.
+Scoped: New instance per scope (e.g., per HTTP request). Good for maintaining state during a single request.
+Singleton: One instance for the entire application. Good for shared data and state across the application.
