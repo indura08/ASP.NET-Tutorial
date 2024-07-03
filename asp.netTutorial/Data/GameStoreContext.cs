@@ -19,6 +19,12 @@ namespace asp.netTutorial.Data
                     new { Id = 5, Name = "Kids and Family" }    //me awilla genere table ekt app ek ptan gaddima wage data athulth krnwa
 
                 );
+
+            //me model builder ekn apita krnna puluwan dewal 
+            //1.Entity Configuration: You can configure individual entities, including specifying primary keys, column types, and constraints.
+            //2.Relationship Configuration: You can define relationships between entities, such as one-to-one, one-to-many, and many-to-many relationships.
+            //3.Seeding Data: You can seed initial data into your database.
+            //4.Conventions: You can override EF Core's conventions to customize the mappings.
         }
     }
 }
