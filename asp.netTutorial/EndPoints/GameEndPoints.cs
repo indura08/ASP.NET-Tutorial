@@ -2,6 +2,7 @@
 using asp.netTutorial.Dtos;
 using asp.netTutorial.Entities;
 using asp.netTutorial.Mapping;
+using Microsoft.EntityFrameworkCore;
 
 namespace asp.netTutorial.EndPoints
 {
@@ -22,19 +23,19 @@ namespace asp.netTutorial.EndPoints
             var group = app.MapGroup("games").WithParameterValidation(); //emnna me wage withpramatervalidation method ek group ekt dunnama mulu grp ekema thiyna endpoint walt validation part ek add wenwa , mekn validation part eka hama endpoint ektm adlal wena widiyt dana eka lesi krnwa
             //methanin pahala group kiyla daala thiyna ewat app kiyla daala thibbe eka change krgtta group kiyl daala
 
-            group.MapGet("/", () => games);
+            group.MapGet("/", async (GameStoreContext dbContext) => await dbContext.Games.Include(game => game.Genre).Select(game => game.ToGameSummeryDto()).AsNoTracking().ToListAsync()); //as no tracking kiynne ksima widiykt track rkanna epa return data kiyna eki
 
             //get games by id 
-            group.MapGet("/{id}", (int id , GameStoreContext dbContext) => {
+            group.MapGet("/{id}", async (int id , GameStoreContext dbContext) => {
 
-                Game? game = dbContext.Games.Find(id);
+                Game? game = await dbContext.Games.FindAsync(id);
 
                 return game is null ? Results.NotFound() : Results.Ok(game);
 
             }).WithName(gameEndPoint);
 
             //create new game POST method
-            group.MapPost("/create", (CreateGameDto newGame, GameStoreContext dbContext) => {
+            group.MapPost("/create", async (CreateGameDto newGame, GameStoreContext dbContext) => {
                 /*GameDto game = new GameDto(
                         games.Count + 1,
                         newGame.Name,
@@ -58,7 +59,7 @@ namespace asp.netTutorial.EndPoints
 
 
                 dbContext.Games.Add(gameToEntity);//menna mekn thami kiynne dbcontext eka hraha Games table ekt mem aluth game ek save krnna kiyla 
-                dbContext.SaveChanges();  //menna me wage anthmat changes save krnna kiylth kiynna one 
+                await dbContext.SaveChangesAsync();  //menna me wage anthmat changes save krnna kiylth kiynna one 
 
                 GamesummeryDto gameDto = new GamesummeryDto(
                     
@@ -75,24 +76,25 @@ namespace asp.netTutorial.EndPoints
             //me withparametervalidation scn ek damma input validation error qualitytama denwa 
 
             //update method
-            group.MapPut("/update/{id}", (int id, UpdateDto updateGame, GameStoreContext dbContext) => {
+            group.MapPut("/update/{id}", async (int id, UpdateDto updateGame, GameStoreContext dbContext) => {
 
-                var existingGame = dbContext.Games.Find(id);
+                var existingGame = await dbContext.Games.FindAsync(id);
 
-                if (existingGame != null) {
+                /*if (existingGame == null) {
                     return Results.NotFound();
-                }
+                }*/
 
                 dbContext.Entry(existingGame).CurrentValues.SetValues(updateGame.ToEntity(id));
+                await dbContext.SaveChangesAsync();
 
                 return Results.NoContent();
             });
 
             //delete method
-            group.MapDelete("/delete/{id}", (int id) =>
+            group.MapDelete("/delete/{id}", async (int id , GameStoreContext dbContext) =>
             {
 
-                games.RemoveAll(game => game.Id == id);
+                await dbContext.Games.Where(game => game.Id == id).ExecuteDeleteAsync(); 
                 return (Results.Ok());
             });
 
