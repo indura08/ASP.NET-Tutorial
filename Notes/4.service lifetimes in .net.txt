@@ -27,3 +27,39 @@ example:services.AddSingleton<IMyService, MyService>();
 Transient: New instance per request. Good for lightweight and stateless services.
 Scoped: New instance per scope (e.g., per HTTP request). Good for maintaining state during a single request.
 Singleton: One instance for the entire application. Good for shared data and state across the application.
+
+Question and answers:
+---------------------
+
+Q1: so imagine this , i have a project where i create a social media platform to share photos and message with each others , so give me examples for each of every servic lifetime in asp.net core using this project scenario , because i need real world example to understna dthis, and i want to larn exactly whwr i should use each and evry service life time
+
+A: 
+
+1. Transient Services
+-----------------------
+
+Use Case: For services where you need a fresh instance each time you use it.
+
+Example: Generating temporary tokens or short-lived operations.
+
+Example: Token Generation Service
+Imagine you have a service that generates temporary access tokens for secure operations, like a password reset link. Each request for a token should be unique and independent.
+
+2. Scoped Services
+------------------
+Use Case: For services that need to maintain state within a single user request.
+
+Example: Managing the current user's session, such as tracking their actions or temporary data.
+
+Example: User Session Service
+Imagine you have a service that keeps track of user actions during their visit to the site, like what pages they've viewed or actions they've taken.
+
+3. Singleton Services
+---------------------
+
+Use Case: For services that need to be shared across the entire application and maintain state.
+
+Example: Caching common data or application-wide settings.
+
+Example: Configuration Service
+Imagine you have a service that holds application-wide settings or configuration that doesn’t change often, such as supported file formats or global settings.

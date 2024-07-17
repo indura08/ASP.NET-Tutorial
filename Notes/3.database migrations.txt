@@ -76,5 +76,9 @@ e kiynne meke theruma awilla
 eta passe meka krla iwar wela api migrations update krnna one  eka krna command ek :
 
 	" dotnet ef database update "
+
+krpu migration ekk remove krnna : 
+
+	" dotnet ef migrations remove "
 	
 
