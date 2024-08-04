@@ -1,0 +1,17 @@
+What is a Task?
+==============
+
+Task: A Task represents an asynchronous operation. It is a type in C# that provides a way to run methods asynchronously. When you see Task as a return type, it means the method will perform some work asynchronously and eventually return a result or complete its operation.
+
+Task: Represents an asynchronous operation that does not return a value.
+Task<T>: Represents an asynchronous operation that returns a value of type T. For example, Task<int> represents an asynchronous operation that returns an integer.
+
+
+Task
+
+In .NET, Task is a way to represent some work that is going to be done in the future. It can be thought of as a "promise" to complete some work later.
+
+Here's a simple analogy:
+
+Imagine you order a pizza. The pizza shop gives you a receipt as a promise that you will get your pizza in 30 minutes. The Task is like that receipt. It doesn't give you the pizza right away, but it promises that you'll get it.
+In code, a Task allows you to run operations asynchronously (in the background) without blocking the main thread. This is useful for improving the performance and responsiveness of applications, especially when doing things like calling a web API or reading from a database.
