@@ -1,0 +1,22 @@
+In ASP.NET Core, services are reusable components that contain logic or functionality you can use across your application. Services are often used to perform tasks such as business logic, data access, logging, sending emails, or any operation that supports your application's features.
+
+Why Do We Need Services?
+========================
+
+1. Separation of Concerns: Services help keep your code clean by separating business logic from the controllers. Controllers handle HTTP requests, while services handle the actual work (e.g., saving data, sending emails, etc.).
+
+2. Reusability: A service can be reused in multiple parts of your application, making your code more modular.
+
+3. Dependency Injection: ASP.NET Core uses Dependency Injection (DI) to manage services, making them easy to test, configure, and manage.
+
+How Do Services Work in ASP.NET Core?
+=====================================
+
+1. Define a Service: Create a class that contains the logic you need.
+
+2. Register the Service: Add the service to the Dependency Injection (DI) container in Program.cs.
+
+3. Use the Service: Inject the service into controllers or other classes where it's needed.
+
+examples blnna nourish net project eke 
+
