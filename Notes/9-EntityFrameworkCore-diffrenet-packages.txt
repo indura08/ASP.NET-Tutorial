@@ -1,0 +1,68 @@
+1. Microsoft.EntityFrameworkCore
+---------------------------------
+
+This is the core package for Entity Framework Core (EF Core), which is an Object-Relational Mapping (ORM) framework for .NET applications.
+
+Purpose: It allows you to interact with databases using C# classes instead of writing raw SQL queries. EF Core handles the translation between objects (like Product, Order, etc.) and database tables.
+
+Key Functions:
+
+CRUD operations (Create, Read, Update, Delete) on the database via C# code.
+Maps C# classes to database tables.
+Makes database queries in C# easier with LINQ (Language Integrated Query).
+
+Example:
+
+public class Product
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+}
+
+public class AppDbContext : DbContext
+{
+    public DbSet<Product> Products { get; set; }
+}
+
+With this, EF Core automatically maps the Product class to a Products table in your database.
+
+
+2. Microsoft.EntityFrameworkCore.Design
+----------------------------------------
+
+This package is mostly used in development time and provides the necessary tools to help with the design-time activities of EF Core.
+
+Purpose: It includes features for migrations, scaffolding, and model creation. This package is required when you want to use migration commands like Add-Migration or dotnet ef commands.
+
+Key Functions:
+
+Migrations: Helps you create, manage, and apply changes to your database schema over time.
+Example: You make changes to your C# model, and you need the database to match those changes.
+Scaffolding: Helps generate models and context classes based on an existing database (reverse engineering).
+
+Example:
+
+After installing this package, you can run the following command to create a migration:
+
+" dotnet ef migrations add InitialCreate "
+
+
+3. Microsoft.EntityFrameworkCore.Tools
+----------------------------------------
+
+This package provides command-line tools for interacting with Entity Framework Core. It works with Package Manager Console (PMC) in Visual Studio and the .NET CLI (Command-Line Interface).
+
+Purpose: It includes commands that help with database management and migrations, enabling you to interact with the database directly from the command line.
+
+Key Functions:
+
+Database Migration commands (e.g., Add-Migration, Update-Database).
+Helps to apply or roll back database changes from migrations directly from the command line.
+Creating or applying migrations based on changes in your C# model.
+
+Example: You can use this command to apply migrations to the database:
+
+" dotnet ef database update "
+
+

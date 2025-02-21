@@ -1,0 +1,103 @@
+Monolithic Architecture in ASP.NET
+
+A monolithic architecture in ASP.NET refers to a software design where the entire application (frontend, backend, database access, and business logic) is built as a single, unified codebase. It runs as a single process and is deployed as a single unit.
+
+Key Characteristics of Monolithic Architecture
+
+1. Single Codebase & Deployment
+
+Everything (UI, business logic, database access, authentication, etc.) is contained within one project.
+The entire application is packaged into a single .exe or .dll file when deployed.
+
+2. Tightly Coupled Components
+
+All modules (user authentication, order processing, notifications, etc.) are interdependent.
+Changes to one module may require redeploying the entire application.
+
+3. Single Database
+
+Usually, a monolithic application interacts with a single relational database (e.g., SQL Server, MySQL).
+All data-related operations are managed in one place.
+
+4. Runs as a Single Process
+
+The entire application runs on a single web server (e.g., IIS or Kestrel).
+Scaling is done by replicating the whole application (vertical/horizontal scaling).
+
+
+Example of a Monolithic ASP.NET Application
+
+A monolithic e-commerce application built using ASP.NET Core MVC might have:
+
+A single solution containing:
+
+Controllers/ (handles HTTP requests)
+Services/ (business logic)
+Repositories/ (database access)
+Views/ (UI using Razor pages)
+Models/ (data models)
+
+
+Folder structure
+
+ECommerceApp/
+│── Controllers/
+│   ├── ProductController.cs
+│   ├── OrderController.cs
+│   ├── UserController.cs
+│
+│── Models/
+│   ├── Product.cs
+│   ├── Order.cs
+│   ├── User.cs
+│
+│── Views/
+│   ├── Home/
+│   │   ├── Index.cshtml
+│   │   ├── ProductDetails.cshtml
+│
+│── Services/
+│   ├── ProductService.cs
+│   ├── OrderService.cs
+│
+│── Repositories/
+│   ├── ProductRepository.cs
+│   ├── OrderRepository.cs
+│
+│── appsettings.json
+│── Startup.cs
+│── Program.cs
+
+
+Advantages of Monolithic Architecture
+
+✅ Simple to Develop & Deploy
+
+Easier to build and test since everything is in one project.
+No need for complex service communication.
+✅ Better Performance
+
+No network latency between services since everything runs in the same process.
+✅ Easier Debugging
+
+Debugging is straightforward as all components are available in one place.
+✅ Less Operational Overhead
+
+No need to manage multiple services or distributed systems.
+
+
+Disadvantages of Monolithic Architecture
+
+❌ Hard to Scale Independently
+
+The entire application needs to scale, even if only one module has high traffic.
+❌ Slower Development as the Application Grows
+
+A large codebase can make feature development and deployment more complex.
+❌ Risky Deployments
+
+A small change requires redeploying the entire application, increasing the risk of failures.
+❌ Tightly Coupled Code
+
+Difficult to introduce new technologies without refactoring the entire system.
+

@@ -9,7 +9,7 @@ How to Use Migrations in .NET
 Step-by-Step Guide
 
 1.Install Necessary Packages:
------------------------------------
+--------------------------------
 Make sure you have the Entity Framework Core and the specific provider for your database installed. For example, if you are using SQLite, you would install:
 
 dotnet add package Microsoft.EntityFrameworkCore.Sqlite
