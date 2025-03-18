@@ -20,6 +20,7 @@ IQueryable<Listing> Getall();:
 
 Purpose: This method is used to retrieve a collection of Listing objects from the database.
 Why IQueryable: IQueryable allows for deferred execution, meaning that the actual query to the database isn't executed until the data is actually accessed (e.g., when you loop through the results or convert them to a list). This also allows further filtering or sorting before the query is executed.
+
 Task Add(Listing listing);:
 
 Purpose: This method adds a new Listing object to the database.

@@ -1,0 +1,193 @@
+🚀 What is gRPC?
+-----------------
+
+gRPC (Google Remote Procedure Call) is an open-source communication protocol developed by Google. It allows services to communicate with each other easily and efficiently over a network.
+Think of it as a way for different applications (or parts of the same application) to talk to each other — kind of like making a phone call between apps! 📞
+
+
+💡 How Does gRPC Work?
+-------------------------
+
+gRPC uses Remote Procedure Calls (RPC) to let one application call a function directly on another application over the internet or a network.
+
+Instead of sending simple HTTP requests, it sends binary data over a faster, lightweight protocol called HTTP/2.
+It uses Protocol Buffers (protobuf) as a way to serialize data (like converting it to a compact format).
+
+🔧 Steps to Make a gRPC Call:
+
+1. Define a Service: Create a .proto file that describes the methods and messages.
+2. Generate Code: Use the protoc compiler to generate client and server code.
+3. Implement the Service: Write server-side logic.
+4. Make Calls: The client calls the server methods like they were local functions.
+
+⚡ Why Use gRPC? (Advantages)
+--------------------------------
+
+High Performance: Uses HTTP/2, which is faster and supports multiplexing (multiple calls over one connection).
+Strong Typing: Uses Protocol Buffers to strictly define the data structure.
+Bi-Directional Streaming: Both client and server can send multiple messages in one call.
+Cross-Language Support: Works with C#, Java, Python, Go, and more.
+Efficient Serialization: Smaller and faster data transmission than JSON.
+
+
+🏆 When to Use gRPC?
+---------------------
+
+Microservices Communication: When speed and efficiency are crucial.
+Real-Time Communication: Like chat apps or live video streaming.
+Low Latency Requirements: Where quick response times are needed.
+Cross-Language Systems: Connecting systems written in different programming languages.
+
+
+Real World Example
+-------------------
+
+💡 Real-World Scenario: Food Delivery Service
+
+Imagine a Food Delivery App where:
+
+Order Service handles order placements.
+Restaurant Service receives order details and updates the order status.
+The services communicate using gRPC to ensure low-latency communication.
+
+📝 Step 2: Define the gRPC Service (.proto file)
+=================================================
+
+Create a protos folder in both services and add a file named orders.proto.
+
+orders.proto
+
+syntax = "proto3";
+
+option csharp_namespace = "FoodDeliveryApp";
+
+service OrderService {
+  rpc PlaceOrder (OrderRequest) returns (OrderReply);
+  rpc GetOrderStatus (StatusRequest) returns (StatusReply);
+}
+
+message OrderRequest {
+  string order_id = 1;
+  string restaurant_name = 2;
+  string item_name = 3;
+  int32 quantity = 4;
+}
+
+message OrderReply {
+  string confirmation = 1;
+}
+
+message StatusRequest {
+  string order_id = 1;
+}
+
+message StatusReply {
+  string status = 1;
+}
+
+⚙️ Step 3: Implement the gRPC Service (OrderService)
+
+Open OrderService/Services/OrderService.cs and implement the methods.
+
+OrderService.cs
+
+using Grpc.Core;
+using FoodDeliveryApp;
+
+namespace OrderService.Services;
+
+public class OrderServiceImpl : OrderService.OrderServiceBase
+{
+    private static readonly Dictionary<string, string> OrderStatuses = new();
+
+    public override Task<OrderReply> PlaceOrder(OrderRequest request, ServerCallContext context)
+    {
+        string confirmation = $"Order received: {request.item_name} x{request.quantity} from {request.restaurant_name}";
+        OrderStatuses[request.order_id] = "Pending";
+        Console.WriteLine(confirmation);
+        
+        return Task.FromResult(new OrderReply { Confirmation = confirmation });
+    }
+
+    public override Task<StatusReply> GetOrderStatus(StatusRequest request, ServerCallContext context)
+    {
+        string status = OrderStatuses.TryGetValue(request.order_id, out var orderStatus) ? orderStatus : "Not Found";
+        return Task.FromResult(new StatusReply { Status = status });
+    }
+}
+
+
+📝 Step 4: Configure gRPC in Program.cs (OrderService)
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddGrpc();
+
+var app = builder.Build();
+app.MapGrpcService<OrderServiceImpl>();
+app.MapGet("/", () => "Order Service is running!");
+
+app.Run();
+
+
+🛠️ Step 5: Client Implementation (RestaurantService)
+
+In the RestaurantService, create a client to communicate with OrderService.
+
+RestaurantClient.cs
+
+
+using Grpc.Net.Client;
+using FoodDeliveryApp;
+
+class RestaurantClient
+{
+    static async Task Main(string[] args)
+    {
+        using var channel = GrpcChannel.ForAddress("http://localhost:5000");
+        var client = new OrderService.OrderServiceClient(channel);
+
+        var orderRequest = new OrderRequest
+        {
+            OrderId = "ORD123",
+            RestaurantName = "Pizza Palace",
+            ItemName = "Margherita Pizza",
+            Quantity = 2
+        };
+
+        var response = await client.PlaceOrderAsync(orderRequest);
+        Console.WriteLine($"Order Confirmation: {response.Confirmation}");
+
+        var statusRequest = new StatusRequest { OrderId = "ORD123" };
+        var statusResponse = await client.GetOrderStatusAsync(statusRequest);
+        Console.WriteLine($"Order Status: {statusResponse.Status}");
+    }
+}
+
+
+🛠️ Step 6: Run the Services
+
+Two terminals walin dotnet run ghnwa
+
+
+
+Q: im confused with this all. are orderService and RestaurentService normal asp.net web api project?
+
+A:  
+
+🚀 Are OrderService and RestaurantService Normal ASP.NET Web API Projects?
+
+No, they are not normal ASP.NET Web API projects.
+They are gRPC projects, which are a bit different from typical Web API projects.
+
+💡 Difference between ASP.NET Web API and gRPC Projects
+
+Aspect				ASP.NET Web API						gRPC Project
+----------------------------------------------------------------------------------------------------------------
+Protocol			HTTP/HTTPS (uses JSON)				HTTP/2 (uses Protocol Buffers)
+Communication			Text-based (JSON)				Binary-based (Protobuf - faster)
+Service Definition		Uses Controllers and HTTP methods (GET, POST)	Uses .proto files to define services
+Performance			Good, but can be slower with large data		Excellent, especially for real-time data
+Use Case			RESTful APIs, public APIs			Microservices, internal communication
+
+
+
